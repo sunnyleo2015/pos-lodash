@@ -1,11 +1,21 @@
 //TODO: Please write code in this file.
 function printInventory(inputs) {
+    //获取商品全部信息
+    var allGoodsInfo = loadAllItems();
+    //拆分商品信息
+    var buyedItems = buyedItem(inputs);
+    //统计购买的商品数量
+    var itemCount = _.countBy(buyedItems);
+    //获取商品具体信息
+    var buyedItemsInfo = getItemsInfo(itemCount,allGoodsInfo);
+    //获取赠品
+    var promitions = loadPromotions();
+    //计算赠品
 }
 
-//统计商品数量
-function getCount(inputs) {
+function buyedItem(inputs) {
     var buyedItem = [];
-    //计算每个选项的数量
+
     _.forEach(inputs, function(n){
         if(n.indexOf('-') != -1){
             var itemName = n.split('-')[0];
@@ -38,24 +48,18 @@ function getCount(inputs) {
     return result;*/
 }
 
-//转换为具体的数值
-function changeToItems(itemCount, itemInfo) {
-    var result = [];
-    for(var i=0; i<itemCount; i++){
-        for(var j=0; j<itemInfo; j++){
-            if(itemCount[i].barcode == itemInfo[j].barcode){
-                result.push({
-                            barcode: itemCount[i].barcode,
-                            count:itemCount[i].count,
-                            name: itemInfo[j].name,
-                            unit: itemInfo[j].unit,
-                            price: itemInfo[j].price
-                            })
+//获取商品具体信息
+function getItemsInfo(itemCount, allGoodsInfo) {
+    var buyedItemInfo = [];
+    for(x in itemCount){
+        _.map(allGoodsInfo,function(n){
+            if(x == n.barcode){
+                n.count = itemCount[x];
+                buyedItemInfo.push(n)
             }
-        }
+        })
     }
-    console.log('changeToItems');
-    return result;
+    return buyedItemInfo;
 }
 
 //计算优惠
