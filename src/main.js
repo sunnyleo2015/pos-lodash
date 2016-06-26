@@ -9,8 +9,11 @@ function printInventory(inputs) {
     //获取商品具体信息
     var buyedItemsInfo = getItemsInfo(itemCount,allGoodsInfo);
     //获取赠品
-    var promitions = loadPromotions();
-    //计算赠品
+    var promotions = loadPromotions();
+    //计算小计内容
+    var tipInfo = getBuyedTipInfo(buyedItemsInfo, promotions);
+    //获取购买物品的优惠信息
+    var giftItem = getGiftItem(tipInfo);
 }
 
 function buyedItem(inputs) {
@@ -50,22 +53,34 @@ function buyedItem(inputs) {
 
 //获取商品具体信息
 function getItemsInfo(itemCount, allGoodsInfo) {
-    var buyedItemInfo = [];
+    var buyedItemsInfo = [];
     for(x in itemCount){
         _.map(allGoodsInfo,function(n){
             if(x == n.barcode){
                 n.count = itemCount[x];
-                buyedItemInfo.push(n)
+                buyedItemsInfo.push(n)
             }
         })
     }
-    return buyedItemInfo;
+    return buyedItemsInfo;
 }
 
-//计算优惠
-function itemsPromotion(buyedItemInfo, promotionInfo){
-    var result = [];
-    //判断商品类型
+//计算小计信息
+function getBuyedTipInfo(buyedItemsInfo, promotions){
+    var promotionsType = promotions[0].barcodes;
+    var buyedTipInfo = _.forEach(buyedItemsInfo,function(n){
+        if(promotionsType.indexOf(n.barcode)!=-1){
+            n.promotionCount = Math.floor((n.count)/3);
+        }else {
+            n.promotionCount = 0;
+        }
+        n.totalPrice = n.price*n.count;
+        n.promotionPrice = n.price*n.promotionCount;
+        n.tipPrice = n.totalPrice - n.promotionPrice;
+    });
+    return buyedTipInfo;
+}
 
-    //
+function getGiftItem(tipInfo){
+    
 }
