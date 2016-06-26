@@ -14,6 +14,8 @@ function printInventory(inputs) {
     var tipInfo = getBuyedTipInfo(buyedItemsInfo, promotions);
     //获取购买物品的优惠信息
     var giftItem = getGiftItem(tipInfo);
+    //绘制输出信息
+    printInfo(tipInfo,giftItem);
 }
 
 function buyedItem(inputs) {
@@ -82,5 +84,34 @@ function getBuyedTipInfo(buyedItemsInfo, promotions){
 }
 
 function getGiftItem(tipInfo){
-    
+    var giftItem = [];
+    for(var i=0; i<tipInfo.length; i++){
+        if(tipInfo[i].promotionCount != 0){
+            giftItem.push(tipInfo[i]);
+        }
+    }
+    return giftItem;
+}
+
+function printInfo(tipInfo, giftInfo){
+    var infoString = "***<没钱赚商店>购物清单***\n";
+    var giftString = "----------------------\n" +"挥泪赠送商品：\n"
+    var totalPrice = 0;
+    var PromotionNum = 0;
+    for (var i = 0; i < tipInfo.length; i++) {
+        infoString += "名称："+tipInfo[i].name+"，数量："+tipInfo[i].count+tipInfo[i].unit;
+        infoString += "，单价："+tipInfo[i].price.toFixed(2)+"(元)，小计："+tipInfo[i].tipPrice.toFixed(2)+"(元)\n";
+        totalPrice += tipInfo[i].totalPrice;
+        PromotionNum += tipInfo[i].promotionPrice;
+    }
+    finalPay = totalPrice - PromotionNum;
+    for (var i = 0; i < giftInfo.length; i++) {
+        giftString += "名称："+giftInfo[i].name+"，数量："+giftInfo[i].prompCount+giftInfo[i].unit+"\n";
+    }
+    infoString += giftString;
+    infoString += "----------------------\n";
+    infoString += "总计："+finalPay.toFixed(2)+"(元)\n";
+    infoString += "节省："+PromotionNum.toFixed(2)+"(元)\n";
+    infoString += "**********************"
+    console.log(infoString);
 }
