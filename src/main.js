@@ -106,7 +106,7 @@ function printInfo(tipInfo, giftInfo){
     }
     finalPay = totalPrice - PromotionNum;
     for (var i = 0; i < giftInfo.length; i++) {
-        giftString += "名称："+giftInfo[i].name+"，数量："+giftInfo[i].prompCount+giftInfo[i].unit+"\n";
+        giftString += "名称："+giftInfo[i].name+"，数量："+giftInfo[i].promotionCount+giftInfo[i].unit+"\n";
     }
     infoString += giftString;
     infoString += "----------------------\n";
